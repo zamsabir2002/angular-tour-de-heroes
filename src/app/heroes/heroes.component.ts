@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HEROES } from '../mock-heroes';
 import { HeroDetailComponent } from '../hero-detail/hero-detail.component';
 import { HeroService } from '../hero.service';
+import { MessageService } from '../message.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-heroes',
@@ -12,7 +14,8 @@ import { HeroService } from '../hero.service';
   imports: [
     CommonModule, 
     FormsModule,
-    HeroDetailComponent
+    HeroDetailComponent,
+    RouterModule
     // NgFor
   ],
   templateUrl: './heroes.component.html',
@@ -28,18 +31,19 @@ export class HeroesComponent {
   //   name: 'Windstorm'
   // };
 
-  onSelect(hero: Hero): void {
-  this.selectedHero = hero;
-  }
-
-  constructor(private heroService:HeroService){}
-
-  getHeroes(): void {
-    this.heroes = this.heroService.getHeroes();
-  }
+  constructor(private heroService:HeroService, private messageService: MessageService){}
 
   ngOnInit(): void {
     this.getHeroes();
   }
-  
+
+  // onSelect(hero: Hero): void {
+  //   this.selectedHero = hero;
+  //   this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`);
+  // }
+
+  getHeroes(): void {
+    this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
+  }
+
 }
